@@ -2,8 +2,10 @@ package com.example.android.test4;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -45,8 +47,7 @@ import app.akexorcist.bluetotohspp.library.DeviceList;
 
 
 
-public class TMapActivity extends AppCompatActivity implements TMapGpsManager.onLocationChangedCallback{
-
+public class TMapActivity extends AppCompatActivity implements TMapGpsManager.onLocationChangedCallback {
 
 
     TMapView mapView;
@@ -56,7 +57,6 @@ public class TMapActivity extends AppCompatActivity implements TMapGpsManager.on
     TMapGpsManager tmapgps;
     private boolean m_bTrackingMode = true;
     private BluetoothSPP bt;
-
 
 
     EditText keywordView;
@@ -81,6 +81,7 @@ public class TMapActivity extends AppCompatActivity implements TMapGpsManager.on
 
         mLM = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mapView = (TMapView) findViewById(R.id.map_view);
+
 
         mapView.setOnApiKeyListener(new TMapView.OnApiKeyListenerCallback() {
             @Override
@@ -110,11 +111,47 @@ public class TMapActivity extends AppCompatActivity implements TMapGpsManager.on
             }
         });
 
+        final Context context = this;
+
         btn = (Button) findViewById(R.id.btn_search);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 searchPOI();
+//                switch (view.getId()) {
+//                    case R.id.btn_search:
+//                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+//                        // 제목셋팅
+//                        alertDialogBuilder.setTitle("프로그램 종료");
+//                        // AlertDialog 셋팅
+//                        alertDialogBuilder
+//                                .setMessage("프로그램을 종료할 것입니까?")
+//                                .setCancelable(false)
+//                                .setPositiveButton("종료",
+//                                        new DialogInterface.OnClickListener() {
+//                                            public void onClick(
+//                                                    DialogInterface dialog, int id) {
+//                                                // 프로그램을 종료한다
+//                                                TMapActivity.this.finish();
+//                                            }
+//                                        })
+//                                .setNegativeButton("취소",
+//                                        new DialogInterface.OnClickListener() {
+//                                            public void onClick(
+//                                                    DialogInterface dialog, int id) {
+//                                                // 다이얼로그를 취소한다
+//                                                dialog.cancel();
+//                                            }
+//                                        });
+//                        // 다이얼로그 생성
+//                        AlertDialog alertDialog = alertDialogBuilder.create();
+//                        // 다이얼로그 보여주기
+//                        alertDialog.show();
+//                        break;
+//
+//                    default:
+//                        break;
+//                }
             }
         });
 
@@ -137,6 +174,8 @@ public class TMapActivity extends AppCompatActivity implements TMapGpsManager.on
                     }
                 }
             }
+
+
         });
 
         threadDis.start();
@@ -304,31 +343,31 @@ public class TMapActivity extends AppCompatActivity implements TMapGpsManager.on
 
 
                         temp_distance = calcDistance(sLat, sLng, eLat, eLng);
-                        textview = (TextView)findViewById(R.id.text6);
-                        textview.setText("도착지점과의 거리 :"+ temp_distance );
+//                        textview = (TextView)findViewById(R.id.text6);
+//                        textview.setText("도착지점과의 거리 :"+ temp_distance );
                         setup(temp_distance);
 
 
-
-                        double Latitude_s = start.getLatitude();
-                        double Longitude_s = start.getLongitude();
-                        double Latitude_e = end.getLatitude();
-                        double Longitude_e = end.getLongitude();
-
-
-                        String start_lat = Double.toString(Latitude_s);
-                        String start_long = Double.toString(Longitude_s);
-                        String end_lat = Double.toString(Latitude_e);
-                        String end_long = Double.toString(Longitude_e);
-
-                        textview = (TextView)findViewById(R.id.text2);
-                        textview.setText("출발지 위도:"+start_lat );
-                        textview = (TextView)findViewById(R.id.text3);
-                        textview.setText("출발지 경도:"+start_long);
-                        textview = (TextView)findViewById(R.id.text4);
-                        textview.setText("도착지 위도:"+end_lat);
-                        textview = (TextView)findViewById(R.id.text5);
-                        textview.setText("도착지 위도:"+end_long);
+//
+//                        double Latitude_s = start.getLatitude();
+//                        double Longitude_s = start.getLongitude();
+//                        double Latitude_e = end.getLatitude();
+//                        double Longitude_e = end.getLongitude();
+//
+//
+//                        String start_lat = Double.toString(Latitude_s);
+//                        String start_long = Double.toString(Longitude_s);
+//                        String end_lat = Double.toString(Latitude_e);
+//                        String end_long = Double.toString(Longitude_e);
+//
+//                        textview = (TextView)findViewById(R.id.text2);
+//                        textview.setText("출발지 위도:"+start_lat );
+//                        textview = (TextView)findViewById(R.id.text3);
+//                        textview.setText("출발지 경도:"+start_long);
+//                        textview = (TextView)findViewById(R.id.text4);
+//                        textview.setText("도착지 위도:"+end_lat);
+//                        textview = (TextView)findViewById(R.id.text5);
+//                        textview.setText("도착지 위도:"+end_long);
 
                     }
 
@@ -425,15 +464,15 @@ public class TMapActivity extends AppCompatActivity implements TMapGpsManager.on
             @Override
             public void onCalloutRightButton(TMapMarkerItem tMapMarkerItem) {
                 String message = null;
-                switch (typeView.getCheckedRadioButtonId()){
-
-                    case R.id.radio_end:
+//                switch (typeView.getCheckedRadioButtonId()){
+//
+//                    case R.id.radio_end:
 //                        start = tmapgps.getLocation();
                         end = tMapMarkerItem.getTMapPoint();
                         message = "도착지";
 
-                        break;
-                }
+//                        break;
+//                }
 
 
                 Toast.makeText(TMapActivity.this,message + " 설정 완료",Toast.LENGTH_SHORT).show();
