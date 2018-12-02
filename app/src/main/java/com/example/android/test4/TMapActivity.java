@@ -118,76 +118,71 @@ public class TMapActivity extends AppCompatActivity implements TMapGpsManager.on
             @Override
             public void onClick(View view) {
                 searchPOI();
-//                switch (view.getId()) {
-//                    case R.id.btn_search:
-//                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-//                        // 제목셋팅
-//                        alertDialogBuilder.setTitle("프로그램 종료");
-//                        // AlertDialog 셋팅
-//                        alertDialogBuilder
-//                                .setMessage("프로그램을 종료할 것입니까?")
-//                                .setCancelable(false)
-//                                .setPositiveButton("종료",
-//                                        new DialogInterface.OnClickListener() {
-//                                            public void onClick(
-//                                                    DialogInterface dialog, int id) {
-//                                                // 프로그램을 종료한다
-//                                                TMapActivity.this.finish();
-//                                            }
-//                                        })
-//                                .setNegativeButton("취소",
-//                                        new DialogInterface.OnClickListener() {
-//                                            public void onClick(
-//                                                    DialogInterface dialog, int id) {
-//                                                // 다이얼로그를 취소한다
-//                                                dialog.cancel();
-//                                            }
-//                                        });
-//                        // 다이얼로그 생성
-//                        AlertDialog alertDialog = alertDialogBuilder.create();
-//                        // 다이얼로그 보여주기
-//                        alertDialog.show();
-//                        break;
-//
-//                    default:
-//                        break;
-//                }
             }
         });
 
-        Thread threadDis = new Thread(new Runnable() {
-            String straight_distance = "0";
-            TMapPoint end = null;
-            @Override
-            public void run() {
-                while (true) {
-                    Log.i("Thread", "" + 2);
-                    Log.i("point", "" + start);
-                    Log.i("distance",""+ straight_distance);
-                    if (straight_distance != "0") {
-                        setup(straight_distance );
-                    }
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
 
+        btn = (Button) findViewById(R.id.search_load_start);
+        btn.setOnClickListener(new View.OnClickListener() {
+                                   @Override
+                                   public void onClick(View view) {
+                                       if (end != null) {
+                                           switch (view.getId()) {
+                                               case R.id.search_load_start:
+                                                   AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                                                   // 제목셋팅
+                                                   alertDialogBuilder.setTitle("안내 시작");
+                                                   // AlertDialog 셋팅
+                                                   alertDialogBuilder.setMessage("GLASSES로 안내를 시작합니다.").setCancelable(false)
+                                                           .setPositiveButton("안내종료", new DialogInterface.OnClickListener() {
+                                                               public void onClick(
+                                                                       DialogInterface dialog, int id) {
+                                                                   // 프로그램을 종료한다
+                                                                   TMapActivity.this.finish();
+                                                               }
+                                                           })
+                                                           .setNegativeButton("창 닫기",
+                                                                   new DialogInterface.OnClickListener() {
+                                                                       public void onClick(
+                                                                               DialogInterface dialog, int id) {
+                                                                           // 다이얼로그를 취소한다
+                                                                           dialog.cancel();
+                                                                       }
+                                                                   });
+                                                   // 다이얼로그 생성
+                                                   AlertDialog alertDialog = alertDialogBuilder.create();
+                                                   // 다이얼로그 보여주기
+                                                   alertDialog.show();
+                                                   break;
+                                           }
+                                           Thread threadDis = new Thread(new Runnable() {
+                                               String straight_distance = calcDistance(start.getLatitude(), start.getLongitude(), end.getLatitude(), end.getLongitude());
 
-        });
+                                               //                                           TMapPoint end = null;
+                                               @Override
+                                               public void run() {
+                                                   while (true) {
+                                                       Log.i("Thread", "" + 2);
+                                                       Log.i("point", "" + start);
+                                                       Log.i("distance", "" + straight_distance);
+                                                       if (straight_distance != "0") {
+                                                           setup(straight_distance);
+                                                       }
+                                                       try {
+                                                           Thread.sleep(1000);
+                                                       } catch (InterruptedException e) {
+                                                           e.printStackTrace();
+                                                       }
+                                                   }
+                                               }
+                                           });
+                                           threadDis.start();
+                                       } else {
+                                           Toast.makeText(TMapActivity.this, "도착지를 설정하지 않았습니다.", Toast.LENGTH_SHORT).show();
+                                       }
+                                   }
+                               });
 
-        threadDis.start();
-
-//        btn = (Button) findViewById(R.id.search_load_start);
-//        btn.setOnClickListener(new View.OnClickListener() {
-//                                   @Override
-//                                   public void onClick(View view) {
-////                                       String straight_distance = "0";
-////                                       setup(straight_distance);
-//                                   }
-//                               });
 
 
 
@@ -197,14 +192,13 @@ public class TMapActivity extends AppCompatActivity implements TMapGpsManager.on
             @Override
             public void onClick(View view) {
                 if (end != null) {
-//                    searchRoute(start, end);
                     Thread setloc = new Thread(new Runnable() {
                         @Override
                         public void run() {
                             while(true) {
-//               tmapgps = new TMapGpsManager(TMapActivity.this);
-//               tmapgps.setMinTime(1000);//현재 위치를 찾을 최소 시간 (밀리초)
-//               tmapgps.setMinDistance(5);//현재 위치를 갱신할 최소 거리
+//                                tmapgps = new TMapGpsManager(TMapActivity.this);
+//                                tmapgps.setMinTime(1000);//현재 위치를 찾을 최소 시간 (밀리초)
+//                                tmapgps.setMinDistance(1);//현재 위치를 갱신할 최소 거리
                                 tmapgps.setProvider(tmapgps.GPS_PROVIDER);//현재위치를 찾을 방법(네트워크)
                                 tmapgps.OpenGps();//네트워크 위치 탐색 허용
                                 start = mapView.getLocationPoint();
@@ -289,20 +283,6 @@ public class TMapActivity extends AppCompatActivity implements TMapGpsManager.on
         });
     }
 
-//   class setLoc_Thread extends Thread {
-//        public void run() {
-//                tmapgps = new TMapGpsManager(TMapActivity.this);
-//                tmapgps.setMinTime(1000);//현재 위치를 찾을 최소 시간 (밀리초)
-//                tmapgps.setMinDistance(5);//현재 위치를 갱신할 최소 거리
-//                tmapgps.setProvider(tmapgps.NETWORK_PROVIDER);//현재위치를 찾을 방법(네트워크)
-//                tmapgps.OpenGps();//네트워크 위치 탐색 허용
-////          현재 보는 방향
-//                mapView.setCompassMode(true);
-////          현위치 아이콘표시
-//                mapView.setIconVisibility(true);
-//            }
-//    }
-
 
     int i = 0;
     //경로 탐색
@@ -328,6 +308,8 @@ public class TMapActivity extends AppCompatActivity implements TMapGpsManager.on
                         Bitmap e = ((BitmapDrawable) ContextCompat.getDrawable(TMapActivity.this, android.R.drawable.star_big_on)).getBitmap();
                         mapView.setTMapPathIcon(s, e);
                     }
+
+                    // 데이터 확인용 ---------------------------------------------------------------------
 //                        int Distance = (int)tMapPolyLine.getDistance();
 //                        String distance1 = Integer.toString(Distance);
 //                        textview = (TextView)findViewById(R.id.text1);
@@ -335,17 +317,18 @@ public class TMapActivity extends AppCompatActivity implements TMapGpsManager.on
 
 
 
-                        double sLat = start.getLatitude();
-                        double sLng = start.getLongitude();
-                        double eLat = end.getLatitude();
-                        double eLng = end.getLongitude();
-
-
-
-                        temp_distance = calcDistance(sLat, sLng, eLat, eLng);
+//                        double sLat = start.getLatitude();
+//                        double sLng = start.getLongitude();
+//                        double eLat = end.getLatitude();
+//                        double eLng = end.getLongitude();
+//
+//
+//
+//                        temp_distance = calcDistance(sLat, sLng, eLat, eLng);
 //                        textview = (TextView)findViewById(R.id.text6);
 //                        textview.setText("도착지점과의 거리 :"+ temp_distance );
-                        setup(temp_distance);
+//                        Log.i("distance1",""+ temp_distance);
+//                        setup(temp_distance);
 
 
 //
