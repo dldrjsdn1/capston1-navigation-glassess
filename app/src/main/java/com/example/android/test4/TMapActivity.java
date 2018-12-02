@@ -75,7 +75,7 @@ public class TMapActivity extends AppCompatActivity implements TMapGpsManager.on
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        typeView = (RadioGroup) findViewById(R.id.group_type);
+//        typeView = (RadioGroup) findViewById(R.id.group_type);
         keywordView = (EditText) findViewById(R.id.edit_keyword);
         mAdapter = new ArrayAdapter<POI>(this, android.R.layout.simple_list_item_1);
 
