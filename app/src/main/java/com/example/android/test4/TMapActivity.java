@@ -164,9 +164,10 @@ public class TMapActivity extends AppCompatActivity implements TMapGpsManager.on
                                                    while (true) {
                                                        Log.i("Thread", "" + 2);
                                                        Log.i("point", "" + start);
-                                                       Log.i("distance", "" + straight_distance);
+
                                                        if (straight_distance != "0") {
                                                            setup(straight_distance);
+                                                           Log.i("distance", "" + straight_distance);
                                                        }
                                                        try {
                                                            Thread.sleep(1000);
